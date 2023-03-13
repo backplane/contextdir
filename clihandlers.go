@@ -81,7 +81,7 @@ func handleChecksumCmd(c *cli.Context) error {
 
 	if detailed {
 		// write the whole scan
-		if err := utils.WriteJSON(scan); err != nil {
+		if err := utils.WriteJSON(scan.Dir); err != nil {
 			return err
 		}
 		return nil

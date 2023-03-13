@@ -16,7 +16,7 @@ type Directory struct {
 
 type directoryJSON struct {
 	Path  string  `json:"path"`
-	Files []*File `json:"files"`
+	Files []*File `json:"contents"`
 	Hash  string  `json:"hash"`
 }
 
