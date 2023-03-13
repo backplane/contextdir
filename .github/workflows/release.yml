@@ -68,6 +68,7 @@ jobs:
 
           # https://docs.github.com/en/actions/learn-github-actions/variables
           ref_name: Final = os.environ.get("GITHUB_REF_NAME")
+          actor: Final = os.environ.get("GITHUB_ACTOR")
 
 
           def run(cmd: List[str]) -> int:
@@ -76,9 +77,23 @@ jobs:
               try:
                   result = subprocess.check_call(cmd, shell=False)
               except subprocess.CalledProcessError as e:
-                  logging.error("failed to run command, error: %s", e)
+                  logging.fatal("failed to run command, error: %s", e)
                   sys.exit(1)
               return result
+
+
+          def gitconfig():
+              """
+              set the identity of the git comitter in the global git config
+              """
+              logging.info("configuring git")
+              config = {
+                  "user.email": f"{actor}@users.noreply.github.com",
+                  "user.name": actor,
+              }
+              for k, v in config.items():
+                  logging.debug("setting git config %s=%s", k, v)
+                  run(["git", "config", "--global", k, v])
 
 
           def main() -> int:
@@ -86,15 +101,21 @@ jobs:
               entrypoint for direct execution; returns an int for use by sys.exit
               """
               logging.info(
-                  "%s starting up as %s in %s, with ref: %s",
+                  "%s starting up as unix user %s and actor %s in %s, with ref: %s",
                   __name__,
-                  os.environ.get("USER", "unknown"),
+                  os.environ.get("USER", "-unknown-"),
+                  actor,
                   os.getcwd(),
                   ref_name,
               )
               if not ref_name:
                   logging.fatal("cannot continue without a GITHUB_REF_NAME in the environment")
                   return 1
+              if not actor:
+                  logging.fatal("GITHUB_ACTOR is required to be set in the environment")
+                  return 1
+
+              gitconfig()
 
               if m := semver.match(ref_name):
                   major, minor = m.group("major"), m.group("minor")
