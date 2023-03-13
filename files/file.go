@@ -11,8 +11,8 @@ import (
 
 // File represents
 type File struct {
-	Stats     *stat.Stat
-	StatsHash string
+	Stats     *stat.Stat `json:"stats"`
+	StatsHash string     `json:"statshash"`
 }
 
 // NewFile returns a new File struct (it is not involved in the creation of files in the filesystem)
