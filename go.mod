@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/containerd/continuity v0.3.1-0.20230206214859-2a963a2f56e8
-	github.com/moby/buildkit v0.11.5
+	github.com/moby/buildkit v0.11.6
 	github.com/moby/patternmatcher v0.5.0
 	github.com/sirupsen/logrus v1.9.0
 	github.com/urfave/cli/v2 v2.25.1
