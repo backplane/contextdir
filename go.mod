@@ -7,7 +7,7 @@ require (
 	github.com/moby/buildkit v0.11.5
 	github.com/moby/patternmatcher v0.5.0
 	github.com/sirupsen/logrus v1.9.0
-	github.com/urfave/cli/v2 v2.25.1
+	github.com/urfave/cli/v2 v2.25.6
 	golang.org/x/sys v0.7.0
 )
 
