@@ -4,6 +4,7 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
+	"fmt"
 	"io/fs"
 
 	"github.com/backplane/contextdir/stat"
@@ -19,7 +20,9 @@ type File struct {
 func NewFile(fullpath, relpath string, fi fs.FileInfo) (*File, error) {
 	// Gather a bunch of statistics about the file at the given fullpath
 	stats := stat.NewStat(relpath)
-	stats.PopulateFromFileInfo(fullpath, fi)
+	if err := stats.PopulateFromFileInfo(fullpath, fi); err != nil {
+		return nil, fmt.Errorf("failed to populate stat struct for file: '%s' - error: %w", fullpath, err)
+	}
 
 	// We're going to marshall the stats struct into json then use the hash of
 	// that json document as the basis of our context hashing. JSON is way less

@@ -1,6 +1,7 @@
 package stat
 
 import (
+	"fmt"
 	"io/fs"
 	"os"
 )
@@ -37,7 +38,7 @@ func NewStat(path string) *Stat {
 // given fi (fs.FileInfo) and by gathering additional information from lower-level
 // OS APIs as available; the given path MUST be a valid path which can be used
 // in function calls (not an externally-relative path)
-func (s *Stat) PopulateFromFileInfo(path string, fi fs.FileInfo) {
+func (s *Stat) PopulateFromFileInfo(path string, fi fs.FileInfo) error {
 	// NOTE: this does NOT set s.Path from path and this function needs a real
 	// path to read symlinks
 	s.Mode = uint32(fi.Mode())
@@ -47,11 +48,16 @@ func (s *Stat) PopulateFromFileInfo(path string, fi fs.FileInfo) {
 	if fi.Mode()&os.ModeSymlink != 0 {
 		s.Mode = s.Mode | 0777
 
-		if link, err := os.Readlink(path); err == nil {
-			s.Linkname = link
+		link, err := os.Readlink(path)
+		if err != nil {
+			return fmt.Errorf("failed to read link at '%s' - error: %w", path, err)
 		}
+		s.Linkname = link
 	}
 
 	// this is just a stub on windows
-	s.populateFromUnixInfo(path, fi)
+	if err := s.populateFromUnixInfo(path, fi); err != nil {
+		return fmt.Errorf("failed to populate unix info for file at '%s' - error: %w", path, err)
+	}
+	return nil
 }

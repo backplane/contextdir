@@ -2,9 +2,10 @@ package utils
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 
-	"github.com/moby/buildkit/frontend/dockerfile/dockerignore"
+	"github.com/moby/patternmatcher/ignorefile"
 )
 
 // WriteJson writes the given data structure to STDOUT using the indended Marshaler
@@ -13,8 +14,16 @@ func WriteJSON(data any) error {
 	if err != nil {
 		return err
 	}
-	os.Stdout.Write(output)
-	os.Stdout.Write([]byte("\n"))
+
+	// ensure a trailing newline on output
+	if len(output) == 0 || output[len(output)-1] != '\n' {
+		output = append(output, '\n')
+	}
+
+	if _, err := os.Stdout.Write(output); err != nil {
+		return fmt.Errorf("failed to write JSON to stdout - error: %w", err)
+	}
+
 	return nil
 }
 
@@ -25,7 +34,7 @@ func LoadDockerIgnore(path string) (excludes []string, err error) {
 	if err != nil {
 		return
 	}
-	excludes, err = dockerignore.ReadAll(fh)
+	excludes, err = ignorefile.ReadAll(fh)
 	if err != nil {
 		return
 	}
