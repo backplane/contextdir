@@ -1,19 +1,18 @@
 module github.com/backplane/contextdir
 
-go 1.20
+go 1.25.0
 
 require (
-	github.com/containerd/continuity v0.3.1-0.20230206214859-2a963a2f56e8
-	github.com/moby/buildkit v0.11.4
-	github.com/moby/patternmatcher v0.5.0
-	github.com/sirupsen/logrus v1.9.0
-	github.com/urfave/cli/v2 v2.25.0
-	golang.org/x/sys v0.6.0
+	github.com/containerd/continuity v0.4.5
+	github.com/moby/buildkit v0.27.1
+	github.com/moby/patternmatcher v0.6.0
+	github.com/sirupsen/logrus v1.9.4
+	github.com/urfave/cli/v2 v2.27.7
+	golang.org/x/sys v0.41.0
 )
 
 require (
-	github.com/cpuguy83/go-md2man/v2 v2.0.2 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
+	github.com/cpuguy83/go-md2man/v2 v2.0.7 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
-	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
+	github.com/xrash/smetrics v0.0.0-20250705151800-55b8f293f342 // indirect
 )
