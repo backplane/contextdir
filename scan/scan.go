@@ -27,7 +27,7 @@ type ScanResults struct {
 }
 
 func ScanContextDir(contextDir string) (*ScanResults, error) {
-	var results *ScanResults = &ScanResults{
+	var results = &ScanResults{
 		DockerIgnoreEntries: make([]string, 0),
 		IgnoredFiles:        make([]*files.File, 0),
 	}

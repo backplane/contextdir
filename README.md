@@ -253,4 +253,3 @@ $ contextdir checksum --detailed
 
 
 The key .Dir.hash is the SHA-256 sum of all the StatsHash values of every non-ignored file, this is the value that is normally reported without the `--detailed` flag.
-
